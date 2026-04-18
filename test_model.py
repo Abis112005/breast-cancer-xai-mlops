@@ -55,7 +55,7 @@ def test_metadata_keys():
     meta = json.load(open("models/model_metadata.json"))
     for key in ["model_name", "run_id", "test_auc", "features"]:
         assert key in meta, f"Missing key in metadata: {key}"
-    assert meta["test_auc"] >= 0.95, f"AUC in metadata too low: {meta["test_auc"]}"
+    assert meta["test_auc"] >= 0.95, f'AUC in metadata too low: {meta["test_auc"]}'
     print(f"Metadata test passed — model: {meta["model_name"]}, AUC: {meta["test_auc"]}")
 
 if __name__ == "__main__":
