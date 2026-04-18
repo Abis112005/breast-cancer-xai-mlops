@@ -1,4 +1,3 @@
-
 import os
 import json
 import pickle
@@ -82,8 +81,7 @@ def train_and_log(experiment_name="breast-cancer-classification"):
     meta = {"model_name": best["name"], "run_id": best["run_id"],
             "test_auc": best["auc"], "features": list(raw.feature_names)}
     json.dump(meta, open("models/model_metadata.json", "w"), indent=2)
-    print(f"Accuracy: {acc}")
-Best model: {best["name"]} (AUC={best["auc"]:.4f})")
+    print(f'Best model: {best["name"]} (AUC={best["auc"]:.4f})')
     return best
 
 if __name__ == "__main__":
