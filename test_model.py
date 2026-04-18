@@ -64,5 +64,4 @@ if __name__ == "__main__":
     test_model_recall()
     test_prediction_output_shape()
     test_metadata_keys()
-    print("
-All tests passed!")
+    print("Testing passed")
