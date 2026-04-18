@@ -1,67 +1,30 @@
-name: Breast Cancer MLOps CI/CD
+name: ML Pipeline
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
-  train-and-test:
+  build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Cache pip packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
-          pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Train all models
+      - name: Run Training
         run: |
-          cd $GITHUB_WORKSPACE
-          python src/train.py
+          python train.py
 
-      - name: Run model tests
+      - name: Run Tests
         run: |
-          cd $GITHUB_WORKSPACE
-          pytest tests/test_model.py -v --tb=short
-
-      - name: Upload model artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: trained-models
-          path: |
-            models/best_model.pkl
-            models/scaler.pkl
-            models/model_metadata.json
-          retention-days: 30
-
-      - name: Post results summary
-        run: |
-          echo "## Model Training Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          python -c "
-import json
-meta = json.load(open('models/model_metadata.json'))
-print(f"| Metric | Value |", flush=True)
-print(f"| --- | --- |", flush=True)
-print(f"| Best Model | {meta['model_name']} |", flush=True)
-print(f"| Test AUC   | {meta['test_auc']:.4f} |", flush=True)
-print(f"| Run ID     | {meta['run_id'][:8]} |", flush=True)
-" >> $GITHUB_STEP_SUMMARY
+          pytest test_model.py
