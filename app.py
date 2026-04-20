@@ -14,9 +14,9 @@ app = FastAPI(
 
 # Load model and scaler on startup
 try:
-    model  = pickle.load(open("models/best_model.pkl", "rb"))
-    scaler = pickle.load(open("models/scaler.pkl",     "rb"))
-    meta   = json.load(open("models/model_metadata.json"))
+    model  = pickle.load(open("best_model.pkl", "rb"))
+    scaler = pickle.load(open("scaler.pkl", "rb"))
+    meta   = json.load(open("model_metadata.json"))
 except FileNotFoundError as e:
     raise RuntimeError(f"Model files not found: {e}")
 
