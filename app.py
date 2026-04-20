@@ -59,7 +59,7 @@ def predict(patient: PatientFeatures):
     if len(patient.features) != len(meta["features"]):
         raise HTTPException(
             status_code=422,
-            detail=f"Expected {len(meta["features"])} features, got {len(patient.features)}"
+            detail=f"Expected {len(meta['features'])} features, got {len(patient.features)}"
         )
     X       = np.array(patient.features).reshape(1, -1)
     X_sc    = scaler.transform(X)
